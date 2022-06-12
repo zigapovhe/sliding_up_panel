@@ -354,6 +354,19 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
                                 : widget.panelBuilder!(),
                           )),
 
+                      // footer
+                      widget.footer != null
+                          ? Positioned(
+                              top: widget.slideDirection == SlideDirection.UP
+                                  ? null
+                                  : 0.0,
+                              bottom:
+                                  widget.slideDirection == SlideDirection.DOWN
+                                      ? null
+                                      : 0.0,
+                              child: widget.footer ?? SizedBox())
+                          : Container(),
+
                       // header
                       widget.header != null
                           ? Positioned(
@@ -366,19 +379,6 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
                                       : null,
                               child: widget.header ?? SizedBox(),
                             )
-                          : Container(),
-
-                      // footer
-                      widget.footer != null
-                          ? Positioned(
-                              top: widget.slideDirection == SlideDirection.UP
-                                  ? null
-                                  : 0.0,
-                              bottom:
-                                  widget.slideDirection == SlideDirection.DOWN
-                                      ? null
-                                      : 0.0,
-                              child: widget.footer ?? SizedBox())
                           : Container(),
 
                       // collapsed panel
