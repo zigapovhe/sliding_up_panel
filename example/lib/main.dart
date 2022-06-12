@@ -48,9 +48,11 @@ class _HomePageState extends State<HomePage> {
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
   double _panelHeightClosed = 95.0;
+  late final ScrollController scrollController;
 
   @override
   void initState() {
+    scrollController = ScrollController();
     super.initState();
 
     _fabHeight = _initFabHeight;
@@ -70,7 +72,8 @@ class _HomePageState extends State<HomePage> {
             parallaxEnabled: true,
             parallaxOffset: .5,
             body: _body(),
-            panelBuilder: (sc) => _panel(sc),
+            scrollController: scrollController,
+            panelBuilder: () => _panel(scrollController),
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(18.0),
                 topRight: Radius.circular(18.0)),

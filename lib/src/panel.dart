@@ -34,7 +34,7 @@ class SlidingUpPanel extends StatefulWidget {
   /// the panel position with the scroll position. Useful for implementing an
   /// infinite scroll behavior. If [panel] and [panelBuilder] are both non-null,
   /// [panel] will be used.
-  final Widget Function(ScrollController sc)? panelBuilder;
+  final Widget? Function()? panelBuilder;
 
   /// The Widget displayed overtop the [panel] when collapsed.
   /// This fades out as the panel is opened.
@@ -158,11 +158,11 @@ class SlidingUpPanel extends StatefulWidget {
   /// in the closed position and must be opened. PanelState.OPEN indicates that
   /// by default the Panel is open and must be swiped closed by the user.
   final PanelState defaultPanelState;
+  final ScrollController? scrollController;
 
   SlidingUpPanel(
       {Key? key,
       this.panel,
-      this.panelBuilder,
       this.body,
       this.collapsed,
       this.minHeight = 100.0,
@@ -195,7 +195,9 @@ class SlidingUpPanel extends StatefulWidget {
       this.slideDirection = SlideDirection.UP,
       this.defaultPanelState = PanelState.CLOSED,
       this.header,
-      this.footer})
+      this.footer,
+      this.scrollController,
+      this.panelBuilder})
       : assert(panel != null || panelBuilder != null),
         assert(0 <= backdropOpacity && backdropOpacity <= 1.0),
         assert(snapPoint == null || 0 < snapPoint && snapPoint < 1.0),
@@ -208,7 +210,7 @@ class SlidingUpPanel extends StatefulWidget {
 class _SlidingUpPanelState extends State<SlidingUpPanel>
     with SingleTickerProviderStateMixin {
   late AnimationController _ac;
-  late ScrollController _sc;
+  late final ScrollController _sc;
 
   bool _scrollingEnabled = false;
   VelocityTracker _vt = new VelocityTracker.withKind(PointerDeviceKind.touch);
@@ -238,7 +240,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
 
     // prevent the panel content from being scrolled only if the widget is
     // draggable and panel scrolling is enabled
-    _sc = new ScrollController();
+    _sc = widget.scrollController ?? ScrollController();
     _sc.addListener(() {
       if (widget.isDraggable && !_scrollingEnabled) _sc.jumpTo(0);
     });
@@ -349,7 +351,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
                             height: widget.maxHeight,
                             child: widget.panel != null
                                 ? widget.panel
-                                : widget.panelBuilder!(_sc),
+                                : widget.panelBuilder!(),
                           )),
 
                       // header
