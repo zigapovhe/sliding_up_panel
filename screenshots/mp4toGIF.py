@@ -3,9 +3,10 @@
 # Purpose: converts an mp4 to GIF
 # Copyright: © 2020, Akshath Jain. All rights reserved.
 
+import os
+os.environ["IMAGEIO_FFMPEG_EXE"] = "/Users/vzotov/ffmpeg"
 # pip install MoviePy
 import moviepy.editor as mp
-
 file = "video.mp4"
 output = "example.gif"
 fps = 27
