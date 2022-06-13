@@ -74,31 +74,22 @@ class _HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width,
               height: 100,
               child: IgnoreDraggableWidget(
-                child: Container(
-                  child: ElevatedButton(
-                      onPressed: () => {}, child: Text('dsadsa')),
-                ),
-              ),
+                  child: BottomNavigationBar(
+                      backgroundColor: Colors.blue[50],
+                      items: [
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.home), label: 'Home'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.man), label: 'Profile'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.settings), label: 'Settings'),
+                  ])),
             ),
             header: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ForceDraggableWidget(
-                      child: Container(
-                          width: 44,
-                          height: 44,
-                          decoration:
-                              BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(.04),
-                                blurRadius: 4),
-                          ]),
-                          child: FittedBox(
-                              child: FloatingActionButton(
-                            onPressed: () => {},
-                          )))),
                   ForceDraggableWidget(
                     child: Container(
                       width: 100,
@@ -114,9 +105,9 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Container(
                                 width: 30,
-                                height: 5,
+                                height: 7,
                                 decoration: BoxDecoration(
-                                    color: Colors.grey[300],
+                                    color: Colors.blueAccent,
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(12.0))),
                               ),
