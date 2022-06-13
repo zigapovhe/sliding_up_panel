@@ -50,10 +50,12 @@ class _HomePageState extends State<HomePage> {
   double _panelHeightOpen = 0;
   double _panelHeightClosed = 95.0;
   late final ScrollController scrollController;
+  late final PanelController panelController;
 
   @override
   void initState() {
     scrollController = ScrollController();
+    panelController = PanelController();
     super.initState();
 
     _fabHeight = _initFabHeight;
@@ -73,8 +75,9 @@ class _HomePageState extends State<HomePage> {
             parallaxEnabled: true,
             parallaxOffset: .5,
             body: _body(),
+            controller: panelController,
             scrollController: scrollController,
-            panelBuilder: () => _panel(scrollController),
+            panelBuilder: () => _panel(),
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(18.0),
                 topRight: Radius.circular(18.0)),
@@ -133,14 +136,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _panel(ScrollController sc) {
+  Widget _panel() {
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
         child: Stack(
           children: [
             ListView(
-              controller: sc,
+              physics: PanelScrollPhysics(controller: panelController),
+              controller: scrollController,
               children: <Widget>[
                 SizedBox(
                   height: 12.0,
@@ -243,25 +247,31 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 12.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 30,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.0))),
+            ForceDraggableWidget(
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 30,
+                          height: 5,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0))),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ],
         ));

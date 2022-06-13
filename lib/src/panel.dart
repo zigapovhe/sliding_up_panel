@@ -6,6 +6,7 @@ Copyright: © 2020, Akshath Jain. All rights reserved.
 Licensing: More information can be found here: https://github.com/akshathjain/sliding_up_panel/blob/master/LICENSE
 */
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -438,13 +439,12 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
           widget.parallaxOffset;
   }
 
+  bool _ignoreScrollable = false;
+
   // returns a gesture detector if panel is used
   // and a listener if panelBuilder is used.
   // this is because the listener is designed only for use with linking the scrolling of
   // panels and using it for panels that don't want to linked scrolling yields odd results
-
-  bool _ignoreScrollable = false;
-
   Widget _gestureHandler({required Widget child}) {
     if (!widget.isDraggable) return child;
 
@@ -467,9 +467,14 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
         // if there any widget in the path that must ignore taps,
         // stop it right here
         if (result.path.any((entry) =>
+            entry.target.runtimeType == ForceDraggableWidgetRenderBox)) {
+          widget.controller?._nowTargetForceDraggable = true;
+        } else if (result.path.any((entry) =>
             entry.target.runtimeType == IgnoreDraggableWidgetWidgetRenderBox)) {
           _ignoreScrollable = true;
           return;
+        } else {
+          widget.controller?._nowTargetForceDraggable = false;
         }
         _ignoreScrollable = false;
         _vt.addPosition(e.timeStamp, e.position);
@@ -491,7 +496,8 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
   // handles the sliding gesture
   void _onGestureSlide(double dy) {
     // only slide the panel if scrolling is not enabled
-    if (!_scrollingEnabled) {
+    if (!_scrollingEnabled ||
+        widget.controller?._nowTargetForceDraggable == true) {
       if (widget.slideDirection == SlideDirection.UP)
         _ac.value -= dy / (widget.maxHeight - widget.minHeight);
       else
@@ -675,6 +681,8 @@ class PanelController {
     this._panelState = panelState;
   }
 
+  bool _nowTargetForceDraggable = false;
+
   /// Determine if the panelController is attached to an instance
   /// of the SlidingUpPanel (this property must return true before any other
   /// functions can be used)
@@ -799,3 +807,45 @@ class IgnoreDraggableWidget extends SingleChildRenderObjectWidget {
 }
 
 class IgnoreDraggableWidgetWidgetRenderBox extends RenderPointerListener {}
+
+class ForceDraggableWidget extends SingleChildRenderObjectWidget {
+  final Widget child;
+
+  ForceDraggableWidget({
+    required this.child,
+  }) : super(
+          child: child,
+        );
+
+  @override
+  ForceDraggableWidgetRenderBox createRenderObject(
+    BuildContext context,
+  ) {
+    return ForceDraggableWidgetRenderBox();
+  }
+}
+
+class ForceDraggableWidgetRenderBox extends RenderPointerListener {}
+
+class PanelScrollPhysics extends ScrollPhysics {
+  final PanelController controller;
+  const PanelScrollPhysics({required this.controller, ScrollPhysics? parent})
+      : super(parent: parent);
+  @override
+  PanelScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return PanelScrollPhysics(
+        controller: controller, parent: buildParent(ancestor));
+  }
+
+  /// may update to reflect an entirely unrelated scrollable.
+  @override
+  bool shouldAcceptUserOffset(ScrollMetrics position) {
+    if (controller._nowTargetForceDraggable) {
+      return false;
+    }
+    return super.shouldAcceptUserOffset(position);
+  }
+
+  @override
+  bool get allowImplicitScrolling => false;
+}
