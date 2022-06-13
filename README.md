@@ -6,9 +6,9 @@ A fork of [this](https://github.com/akshathjain/sliding_up_panel) with new featu
 A draggable Flutter widget that makes implementing a SlidingUpPanel much easier! Based on the Material Design bottom sheet component, this widget works on both Android & iOS.
 
 <p>
-  <img width="205px" alt="Example" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/example.gif"/>
-  <img width="220px" alt="Example App Closed" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/exampleclosed.png"/>
-  <img width="220px" alt="Example App Open" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/exampleopen.png" />
+  <img width="205px" alt="Example" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/example.gif"/>
+  <img width="220px" alt="Example App Closed" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/exampleclosed.png"/>
+  <img width="220px" alt="Example App Open" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/exampleopen.png" />
 </p>
 
 <br>
@@ -78,9 +78,9 @@ Widget build(BuildContext context) {
 Both methods produce the same result:
 
 <p float="left">
-  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/simpleusageclosed.png">
-  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/simpleusagemidway.png">
-  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/simpleusageopen.png">
+  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/simpleusageclosed.png">
+  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/simpleusagemidway.png">
+  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/simpleusageopen.png">
 </p>
 
 <br>
@@ -152,9 +152,9 @@ Widget build(BuildContext context){
 Notice how the `Scaffold` is nested inside of the `SlidingUpPanel`. This because the backdrop is rendered only over the `body` of the `SlidingUpPanel`. As a result, if we want the `backdrop` to appear over the `AppBar`, then we *must* nest the `Scaffold` this way.
 
 <p float="left">
-  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/backdropclosed.png">
-  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/backdropmidway.png">
-  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/backdropopen.png">
+  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/backdropclosed.png">
+  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/backdropmidway.png">
+  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/backdropopen.png">
 </p>
 
 <br>
@@ -192,9 +192,9 @@ Widget build(BuildContext context) {
 ```
 
 <p float="left">
-  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/collapsedpanelclosed.png">
-  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/collapsedpanelmidway.png">
-  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/collapsedpanelopen.png">
+  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/collapsedpanelclosed.png">
+  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/collapsedpanelmidway.png">
+  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/collapsedpanelopen.png">
 </p>
 
 
@@ -261,9 +261,9 @@ Widget build(BuildContext context) {
 ```
 
 <p float="left">
-  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/borderclosed.png">
-  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/bordermidway.png">
-  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/borderopen.png">
+  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/borderclosed.png">
+  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/bordermidway.png">
+  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/borderopen.png">
 </p>
 
 
@@ -343,9 +343,9 @@ Widget _floatingPanel(){
 Note that a similar effect can be created by simply adding a `margin` to the `SlidingUpPanel`.
 
 <p float="left">
-  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/floatingclosed.png">
-  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/floatingmidway.png">
-  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/floatingopen.png">
+  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/floatingclosed.png">
+  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/floatingmidway.png">
+  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/floatingopen.png">
 </p>
 
 
@@ -401,9 +401,9 @@ Widget _scrollingList(ScrollController sc){
 ```
 
 <p float="left">
-  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/scrollclosed.png">
-  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/scrollmidway.png">
-  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/akshathjain/sliding_up_panel/master/screenshots/scrollopen.png">
+  <img alt="Panel Closed" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/scrollclosed.png">
+  <img alt="Panel Midway" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/scrollmidway.png">
+  <img alt="Panel Open" width="217px" src="https://raw.githubusercontent.com/Zotov-VD/sliding_up_panel/master/screenshots/scrollopen.png">
 </p>
 
 
