@@ -1,7 +1,7 @@
-# sliding_up_panel
-[![pub package](https://img.shields.io/pub/v/sliding_up_panel.svg)](https://pub.dartlang.org/packages/sliding_up_panel)
-[![GitHub Stars](https://img.shields.io/github/stars/akshathjain/sliding_up_panel.svg?logo=github)](https://github.com/akshathjain/sliding_up_panel)
+# sliding_up_panel2
 [![Platform](https://img.shields.io/badge/platform-android%20|%20ios-green.svg)](https://img.shields.io/badge/platform-Android%20%7C%20iOS-green.svg)
+
+A fork of [this](https://github.com/akshathjain/sliding_up_panel) with new features.
 
 A draggable Flutter widget that makes implementing a SlidingUpPanel much easier! Based on the Material Design bottom sheet component, this widget works on both Android & iOS.
 
@@ -98,8 +98,7 @@ There are several options that allow for more control:
 
 |  Properties  |   Description   |
 |--------------|-----------------|
-| `panel` | The Widget that slides into view. When the `panel` is collapsed and if `collapsed` is null, then top portion of this Widget will be displayed; otherwise, `collapsed` will be displayed overtop of this Widget. |
-|`panelBuilder` [beta]| NOTE: This feature is still in beta and may have some problems. Please open an issue on [GitHub](https://github.com/akshathjain/sliding_up_panel) if you encounter something unexpected. <br><br> Provides a `ScrollController` to attach to a scrollable object in the panel that links the panel position with the scroll position. Useful for implementing an infinite scroll behavior. If `panel` and `panelBuilder` are both non-null, `panel` will be used. |
+| `panelBuilder` | Returns the Widget that slides into view. When the `panel` is collapsed and if `collapsed` is null, then top portion of this Widget will be displayed; otherwise, `collapsed` will be displayed overtop of this Widget. |
 | `collapsed` | The Widget displayed overtop the `panel` when collapsed. This fades out as the `panel` is opened. |
 | `body` | The Widget that lies underneath the sliding panel. This Widget automatically sizes itself to fill the screen. |
 | `header` | Optional persistent widget that floats above the `panel` and attaches to the top of the `panel`. Content at the top of the panel will be covered by this widget. Add padding to the top of the `panel` to avoid coverage. |
@@ -552,3 +551,5 @@ panelController.isPanelAnimating(); // OLD, no longer supported
 ```dart
 panelController.isPanelAnimating; // NEW
 ```
+
+This product includes software developed by Akshath Jain (https://akshathjain.com).

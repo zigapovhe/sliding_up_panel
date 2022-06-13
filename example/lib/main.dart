@@ -1,9 +1,11 @@
 /*
-Name: Akshath Jain
-Date: 3/18/2019 - 4/26/2021
-Purpose: Example app that implements the package: sliding_up_panel
-Copyright: © 2021, Akshath Jain. All rights reserved.
-Licensing: More information can be found here: https://github.com/akshathjain/sliding_up_panel/blob/master/LICENSE
+Name: Zotov Vladimir
+Date: 18/06/22
+Purpose: Defines the package: sliding_up_panel2
+Copyright: © 2022, Zotov Vladimir. All rights reserved.
+Licensing: More information can be found here: https://github.com/Zotov-VD/sliding_up_panel/blob/master/LICENSE
+
+This product includes software developed by Akshath Jain (https://akshathjain.com)
 */
 
 import 'dart:ui';
@@ -242,12 +244,17 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      CachedNetworkImage(
-                        imageUrl:
-                            "https://images.fineartamerica.com/images-medium-large-5/new-pittsburgh-emmanuel-panagiotakis.jpg",
-                        height: 120.0,
-                        width: (MediaQuery.of(context).size.width - 48) / 2 - 2,
-                        fit: BoxFit.cover,
+                      Expanded(
+                        child: ForceDraggableWidget(
+                          child: Placeholder(
+                            fallbackHeight: 120,
+                            child: Center(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('ForceDraggableWidget'),
+                            )),
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: IgnoreDraggableWidget(

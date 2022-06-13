@@ -1,11 +1,13 @@
 /*
-Name: Akshath Jain
-Date: 3/30/19
-Purpose: Defines the package: sliding_up_panel
-Copyright: © 2019, Akshath Jain. All rights reserved.
-Licensing: More information can be found here: https://github.com/akshathjain/sliding_up_panel/blob/master/LICENSE
+Name: Zotov Vladimir
+Date: 18/06/22
+Purpose: Defines the package: sliding_up_panel2
+Copyright: © 2022, Zotov Vladimir. All rights reserved.
+Licensing: More information can be found here: https://github.com/Zotov-VD/sliding_up_panel/blob/master/LICENSE
+
+This product includes software developed by Akshath Jain (https://akshathjain.com)
 */
 
-library sliding_up_panel;
+library sliding_up_panel2;
 
 export 'src/panel.dart';

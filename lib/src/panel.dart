@@ -1,9 +1,11 @@
 /*
-Name: Akshath Jain
-Date: 3/18/2019 - 4/2/2020
-Purpose: Defines the sliding_up_panel widget
-Copyright: © 2020, Akshath Jain. All rights reserved.
-Licensing: More information can be found here: https://github.com/akshathjain/sliding_up_panel/blob/master/LICENSE
+Name: Zotov Vladimir
+Date: 18/06/22
+Purpose: Defines the package: sliding_up_panel2
+Copyright: © 2022, Zotov Vladimir. All rights reserved.
+Licensing: More information can be found here: https://github.com/Zotov-VD/sliding_up_panel/blob/master/LICENSE
+
+This product includes software developed by Akshath Jain (https://akshathjain.com)
 */
 
 import 'package:flutter/gestures.dart';
@@ -457,6 +459,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
             entry.target.runtimeType ==
             _IgnoreDraggableWidgetWidgetRenderBox)) {
           _ignoreScrollable = true;
+          widget.controller?._nowTargetForceDraggable = false;
           return;
         } else {
           widget.controller?._nowTargetForceDraggable = false;
@@ -824,7 +827,7 @@ class _ForceDraggableWidgetRenderBox extends RenderPointerListener {
   HitTestBehavior get behavior => HitTestBehavior.opaque;
 }
 
-/// To make [IgnoreDraggableWidget] work in [Scrollable] widgets
+/// To make [ForceDraggableWidget] work in [Scrollable] widgets
 class PanelScrollPhysics extends ScrollPhysics {
   final PanelController controller;
   const PanelScrollPhysics({required this.controller, ScrollPhysics? parent})
@@ -836,11 +839,17 @@ class PanelScrollPhysics extends ScrollPhysics {
   }
 
   @override
-  bool shouldAcceptUserOffset(ScrollMetrics position) {
-    if (controller._nowTargetForceDraggable) {
-      return false;
-    }
-    return super.shouldAcceptUserOffset(position);
+  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    if (controller._nowTargetForceDraggable) return 0.0;
+    return super.applyPhysicsToUserOffset(position, offset);
+  }
+
+  @override
+  Simulation? createBallisticSimulation(
+      ScrollMetrics position, double velocity) {
+    if (controller._nowTargetForceDraggable)
+      return super.createBallisticSimulation(position, 0);
+    return super.createBallisticSimulation(position, velocity);
   }
 
   @override
