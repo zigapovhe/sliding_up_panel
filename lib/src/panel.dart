@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:flutter/physics.dart';
+import 'package:flutter/rendering.dart';
 
 enum SlideDirection {
   UP,
@@ -441,6 +442,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
   // and a listener if panelBuilder is used.
   // this is because the listener is designed only for use with linking the scrolling of
   // panels and using it for panels that don't want to linked scrolling yields odd results
+
+  bool _ignoreScrollable = false;
+
   Widget _gestureHandler({required Widget child}) {
     if (!widget.isDraggable) return child;
 
@@ -455,14 +459,31 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
     }
 
     return Listener(
-      onPointerDown: (PointerDownEvent p) =>
-          _vt.addPosition(p.timeStamp, p.position),
-      onPointerMove: (PointerMoveEvent p) {
-        _vt.addPosition(p.timeStamp,
-            p.position); // add current position for velocity tracking
-        _onGestureSlide(p.delta.dy);
+      onPointerDown: (PointerDownEvent e) {
+        var rb = context.findRenderObject() as RenderBox;
+        var result = BoxHitTestResult();
+        rb.hitTest(result, position: e.position);
+
+        // if there any widget in the path that must ignore taps,
+        // stop it right here
+        if (result.path.any((entry) =>
+            entry.target.runtimeType == IgnoreDraggableWidgetWidgetRenderBox)) {
+          _ignoreScrollable = true;
+          return;
+        }
+        _ignoreScrollable = false;
+        _vt.addPosition(e.timeStamp, e.position);
       },
-      onPointerUp: (PointerUpEvent p) => _onGestureEnd(_vt.getVelocity()),
+      onPointerMove: (PointerMoveEvent e) {
+        if (_ignoreScrollable) return;
+        _vt.addPosition(e.timeStamp,
+            e.position); // add current position for velocity tracking
+        _onGestureSlide(e.delta.dy);
+      },
+      onPointerUp: (PointerUpEvent e) {
+        if (_ignoreScrollable) return;
+        _onGestureEnd(_vt.getVelocity());
+      },
       child: child,
     );
   }
@@ -759,3 +780,22 @@ class PanelController {
     return _panelState!._isPanelShown;
   }
 }
+
+class IgnoreDraggableWidget extends SingleChildRenderObjectWidget {
+  final Widget child;
+
+  IgnoreDraggableWidget({
+    required this.child,
+  }) : super(
+          child: child,
+        );
+
+  @override
+  IgnoreDraggableWidgetWidgetRenderBox createRenderObject(
+    BuildContext context,
+  ) {
+    return IgnoreDraggableWidgetWidgetRenderBox();
+  }
+}
+
+class IgnoreDraggableWidgetWidgetRenderBox extends RenderPointerListener {}
