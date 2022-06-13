@@ -806,7 +806,10 @@ class IgnoreDraggableWidget extends SingleChildRenderObjectWidget {
   }
 }
 
-class IgnoreDraggableWidgetWidgetRenderBox extends RenderPointerListener {}
+class IgnoreDraggableWidgetWidgetRenderBox extends RenderPointerListener {
+  @override
+  HitTestBehavior get behavior => HitTestBehavior.opaque;
+}
 
 class ForceDraggableWidget extends SingleChildRenderObjectWidget {
   final Widget child;
@@ -825,7 +828,10 @@ class ForceDraggableWidget extends SingleChildRenderObjectWidget {
   }
 }
 
-class ForceDraggableWidgetRenderBox extends RenderPointerListener {}
+class ForceDraggableWidgetRenderBox extends RenderPointerListener {
+  @override
+  HitTestBehavior get behavior => HitTestBehavior.opaque;
+}
 
 class PanelScrollPhysics extends ScrollPhysics {
   final PanelController controller;

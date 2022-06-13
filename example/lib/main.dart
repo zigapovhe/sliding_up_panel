@@ -70,6 +70,65 @@ class _HomePageState extends State<HomePage> {
         alignment: Alignment.topCenter,
         children: <Widget>[
           SlidingUpPanel(
+            footer: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              child: IgnoreDraggableWidget(
+                child: Container(
+                  child: ElevatedButton(
+                      onPressed: () => {}, child: Text('dsadsa')),
+                ),
+              ),
+            ),
+            header: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ForceDraggableWidget(
+                      child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration:
+                              BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(.04),
+                                blurRadius: 4),
+                          ]),
+                          child: FittedBox(
+                              child: FloatingActionButton(
+                            onPressed: () => {},
+                          )))),
+                  ForceDraggableWidget(
+                    child: Container(
+                      width: 100,
+                      height: 40,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 12.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                width: 30,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(12.0))),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             maxHeight: _panelHeightOpen,
             minHeight: _panelHeightClosed,
             parallaxEnabled: true,
@@ -140,138 +199,106 @@ class _HomePageState extends State<HomePage> {
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
-        child: Stack(
-          children: [
-            ListView(
-              physics: PanelScrollPhysics(controller: panelController),
-              controller: scrollController,
+        child: ListView(
+          physics: PanelScrollPhysics(controller: panelController),
+          controller: scrollController,
+          children: <Widget>[
+            SizedBox(
+              height: 12.0,
+            ),
+            SizedBox(
+              height: 18.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 12.0,
-                ),
-                SizedBox(
-                  height: 18.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Explore Pittsburgh",
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 24.0,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 36.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    _button("Popular", Icons.favorite, Colors.blue),
-                    _button("Food", Icons.restaurant, Colors.red),
-                    _button("Events", Icons.event, Colors.amber),
-                    _button("More", Icons.more_horiz, Colors.green),
-                  ],
-                ),
-                SizedBox(
-                  height: 36.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Images",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          )),
-                      SizedBox(
-                        height: 12.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          CachedNetworkImage(
-                            imageUrl:
-                                "https://images.fineartamerica.com/images-medium-large-5/new-pittsburgh-emmanuel-panagiotakis.jpg",
-                            height: 120.0,
-                            width:
-                                (MediaQuery.of(context).size.width - 48) / 2 -
-                                    2,
-                            fit: BoxFit.cover,
-                          ),
-                          Expanded(
-                            child: IgnoreDraggableWidget(
-                              child: Placeholder(
-                                fallbackHeight: 120,
-                                child: Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('IgnoreDraggableWidget'),
-                                )),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+                Text(
+                  "Explore Pittsburgh",
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 24.0,
                   ),
-                ),
-                SizedBox(
-                  height: 36.0,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("About",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          )),
-                      SizedBox(
-                        height: 12.0,
-                      ),
-                      Text(
-                        bigText,
-                        softWrap: true,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 24,
                 ),
               ],
             ),
-            ForceDraggableWidget(
-              child: Container(
-                width: double.infinity,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 30,
-                          height: 5,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12.0))),
+            SizedBox(
+              height: 36.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                _button("Popular", Icons.favorite, Colors.blue),
+                _button("Food", Icons.restaurant, Colors.red),
+                _button("Events", Icons.event, Colors.amber),
+                _button("More", Icons.more_horiz, Colors.green),
+              ],
+            ),
+            SizedBox(
+              height: 36.0,
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Images",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      )),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      CachedNetworkImage(
+                        imageUrl:
+                            "https://images.fineartamerica.com/images-medium-large-5/new-pittsburgh-emmanuel-panagiotakis.jpg",
+                        height: 120.0,
+                        width: (MediaQuery.of(context).size.width - 48) / 2 - 2,
+                        fit: BoxFit.cover,
+                      ),
+                      Expanded(
+                        child: IgnoreDraggableWidget(
+                          child: Placeholder(
+                            fallbackHeight: 120,
+                            child: Center(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('IgnoreDraggableWidget'),
+                            )),
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      )
+                    ],
+                  ),
+                ],
               ),
+            ),
+            SizedBox(
+              height: 36.0,
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("About",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      )),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  Text(
+                    bigText,
+                    softWrap: true,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 24,
             ),
           ],
         ));
