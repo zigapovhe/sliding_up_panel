@@ -1,4 +1,4 @@
-## [3.2.0] - [June 21, 2022]
+## [3.2.0+2] - [June 21, 2022]
 ### Features
 - Added the ability to set ScrollController
 - Added IgnoreDraggableWidget and ForceDraggableWidget
