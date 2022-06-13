@@ -1,4 +1,6 @@
 # sliding_up_panel2
+[![pub package](https://img.shields.io/pub/v/sliding_up_panel2.svg)](https://pub.dartlang.org/packages/sliding_up_panel2)
+[![GitHub Stars](https://img.shields.io/github/stars/Zotov-VD/sliding_up_panel.svg?logo=github)](https://github.com/Zotov-VD/sliding_up_panel)
 [![Platform](https://img.shields.io/badge/platform-android%20|%20ios-green.svg)](https://img.shields.io/badge/platform-Android%20%7C%20iOS-green.svg)
 
 A fork of [this](https://github.com/akshathjain/sliding_up_panel) with new features.
