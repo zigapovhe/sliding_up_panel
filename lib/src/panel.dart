@@ -6,7 +6,6 @@ Copyright: © 2020, Akshath Jain. All rights reserved.
 Licensing: More information can be found here: https://github.com/akshathjain/sliding_up_panel/blob/master/LICENSE
 */
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -22,20 +21,11 @@ enum SlideDirection {
 enum PanelState { OPEN, CLOSED }
 
 class SlidingUpPanel extends StatefulWidget {
-  /// The Widget that slides into view. When the
+  /// Returns the Widget that slides into view. When the
   /// panel is collapsed and if [collapsed] is null,
   /// then top portion of this Widget will be displayed;
   /// otherwise, [collapsed] will be displayed overtop
-  /// of this Widget. If [panel] and [panelBuilder] are both non-null,
-  /// [panel] will be used.
-  final Widget? panel;
-
-  /// WARNING: This feature is still in beta and is subject to change without
-  /// notice. Stability is not gauranteed. Provides a [ScrollController] and
-  /// [ScrollPhysics] to attach to a scrollable object in the panel that links
-  /// the panel position with the scroll position. Useful for implementing an
-  /// infinite scroll behavior. If [panel] and [panelBuilder] are both non-null,
-  /// [panel] will be used.
+  /// of this Widget.
   final Widget? Function()? panelBuilder;
 
   /// The Widget displayed overtop the [panel] when collapsed.
@@ -160,11 +150,14 @@ class SlidingUpPanel extends StatefulWidget {
   /// in the closed position and must be opened. PanelState.OPEN indicates that
   /// by default the Panel is open and must be swiped closed by the user.
   final PanelState defaultPanelState;
+
+  /// To attach to a [Scrollable] on a panel that
+  /// links the panel's position to the scroll position. Useful for implementing
+  /// infinite scroll behavior
   final ScrollController? scrollController;
 
   SlidingUpPanel(
       {Key? key,
-      this.panel,
       this.body,
       this.collapsed,
       this.minHeight = 100.0,
@@ -200,7 +193,7 @@ class SlidingUpPanel extends StatefulWidget {
       this.footer,
       this.scrollController,
       this.panelBuilder})
-      : assert(panel != null || panelBuilder != null),
+      : assert(panelBuilder != null),
         assert(0 <= backdropOpacity && backdropOpacity <= 1.0),
         assert(snapPoint == null || 0 < snapPoint && snapPoint < 1.0),
         super(key: key);
@@ -351,9 +344,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
                                   : 0),
                           child: Container(
                             height: widget.maxHeight,
-                            child: widget.panel != null
-                                ? widget.panel
-                                : widget.panelBuilder!(),
+                            child: widget.panelBuilder!(),
                           )),
 
                       // footer
@@ -448,29 +439,23 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
   Widget _gestureHandler({required Widget child}) {
     if (!widget.isDraggable) return child;
 
-    if (widget.panel != null) {
-      return GestureDetector(
-        onVerticalDragUpdate: (DragUpdateDetails dets) =>
-            _onGestureSlide(dets.delta.dy),
-        onVerticalDragEnd: (DragEndDetails dets) =>
-            _onGestureEnd(dets.velocity),
-        child: child,
-      );
-    }
-
     return Listener(
       onPointerDown: (PointerDownEvent e) {
         var rb = context.findRenderObject() as RenderBox;
         var result = BoxHitTestResult();
         rb.hitTest(result, position: e.position);
 
-        // if there any widget in the path that must ignore taps,
+        // if there any widget in the path that must force graggable,
         // stop it right here
         if (result.path.any((entry) =>
-            entry.target.runtimeType == ForceDraggableWidgetRenderBox)) {
+            entry.target.runtimeType == _ForceDraggableWidgetRenderBox)) {
           widget.controller?._nowTargetForceDraggable = true;
-        } else if (result.path.any((entry) =>
-            entry.target.runtimeType == IgnoreDraggableWidgetWidgetRenderBox)) {
+        }
+        // if there any widget in the path that must ignore moved panel,
+        // stop it right here
+        else if (result.path.any((entry) =>
+            entry.target.runtimeType ==
+            _IgnoreDraggableWidgetWidgetRenderBox)) {
           _ignoreScrollable = true;
           return;
         } else {
@@ -789,6 +774,8 @@ class PanelController {
   }
 }
 
+/// if you want to prevent the panel from being dragged using the widget,
+/// wrap the widget with this
 class IgnoreDraggableWidget extends SingleChildRenderObjectWidget {
   final Widget child;
 
@@ -799,18 +786,22 @@ class IgnoreDraggableWidget extends SingleChildRenderObjectWidget {
         );
 
   @override
-  IgnoreDraggableWidgetWidgetRenderBox createRenderObject(
+  _IgnoreDraggableWidgetWidgetRenderBox createRenderObject(
     BuildContext context,
   ) {
-    return IgnoreDraggableWidgetWidgetRenderBox();
+    return _IgnoreDraggableWidgetWidgetRenderBox();
   }
 }
 
-class IgnoreDraggableWidgetWidgetRenderBox extends RenderPointerListener {
+class _IgnoreDraggableWidgetWidgetRenderBox extends RenderPointerListener {
   @override
   HitTestBehavior get behavior => HitTestBehavior.opaque;
 }
 
+/// if you want to force the panel to be dragged using the widget,
+/// wrap the widget with this
+/// For example, use [Scrollable] inside to allow the panel to be dragged
+///  even if the scroll is not at position 0.
 class ForceDraggableWidget extends SingleChildRenderObjectWidget {
   final Widget child;
 
@@ -821,18 +812,19 @@ class ForceDraggableWidget extends SingleChildRenderObjectWidget {
         );
 
   @override
-  ForceDraggableWidgetRenderBox createRenderObject(
+  _ForceDraggableWidgetRenderBox createRenderObject(
     BuildContext context,
   ) {
-    return ForceDraggableWidgetRenderBox();
+    return _ForceDraggableWidgetRenderBox();
   }
 }
 
-class ForceDraggableWidgetRenderBox extends RenderPointerListener {
+class _ForceDraggableWidgetRenderBox extends RenderPointerListener {
   @override
   HitTestBehavior get behavior => HitTestBehavior.opaque;
 }
 
+/// To make [IgnoreDraggableWidget] work in [Scrollable] widgets
 class PanelScrollPhysics extends ScrollPhysics {
   final PanelController controller;
   const PanelScrollPhysics({required this.controller, ScrollPhysics? parent})
@@ -843,7 +835,6 @@ class PanelScrollPhysics extends ScrollPhysics {
         controller: controller, parent: buildParent(ancestor));
   }
 
-  /// may update to reflect an entirely unrelated scrollable.
   @override
   bool shouldAcceptUserOffset(ScrollMetrics position) {
     if (controller._nowTargetForceDraggable) {
