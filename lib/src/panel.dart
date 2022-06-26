@@ -240,8 +240,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
     _sc = widget.scrollController ?? ScrollController();
     _sc.addListener(() {
       if (widget.isDraggable &&
-          !_scrollingEnabled &&
-          widget.controller?._forceScrollChange != true) _sc.jumpTo(0);
+          (!_scrollingEnabled || _panelPosition < 1) &&
+          widget.controller?._forceScrollChange != true)
+        _sc.jumpTo(_scMinffset);
     });
 
     widget.controller?._addState(this);
@@ -449,11 +450,15 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
         var result = BoxHitTestResult();
         rb.hitTest(result, position: e.position);
 
+        if (_panelPosition == 1) {
+          _scMinffset = 0.0;
+        }
         // if there any widget in the path that must force graggable,
         // stop it right here
         if (result.path.any((entry) =>
             entry.target.runtimeType == _ForceDraggableWidgetRenderBox)) {
           widget.controller?._nowTargetForceDraggable = true;
+          _scMinffset = _sc.offset;
         }
         // if there any widget in the path that must ignore moved panel,
         // stop it right here
@@ -483,10 +488,13 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
     );
   }
 
+  double _scMinffset = 0.0;
+
   // handles the sliding gesture
   void _onGestureSlide(double dy) {
     // only slide the panel if scrolling is not enabled
-    if ((!_scrollingEnabled && widget.controller?._forceScrollChange != true) ||
+    if ((!_scrollingEnabled) ||
+        _panelPosition < 1 ||
         widget.controller?._nowTargetForceDraggable == true) {
       if (widget.slideDirection == SlideDirection.UP)
         _ac.value -= dy / (widget.maxHeight - widget.minHeight);
@@ -497,12 +505,11 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
     // if the panel is open and the user hasn't scrolled, we need to determine
     // whether to enable scrolling if the user swipes up, or disable closing and
     // begin to close the panel if the user swipes down
-    if (_isPanelOpen && _sc.hasClients && _sc.offset <= 0) {
+    if (_isPanelOpen && _sc.hasClients && _sc.offset <= _scMinffset) {
       setState(() {
         if (dy < 0) {
           _scrollingEnabled = true;
         } else {
-          widget.controller?._forceScrollChange = false;
           _scrollingEnabled = false;
         }
       });
@@ -679,8 +686,15 @@ class PanelController {
   /// panelController.forseScrollChange(scrollController.animateTo(100, duration: Duration(milliseconds: 400), curve: Curves.ease))
   Future<void> forseScrollChange(Future func) async {
     _forceScrollChange = true;
+    _panelState!._scrollingEnabled = true;
     await func;
-    // _forceScrollChange = false;
+    // if (_panelState!._sc.offset == 0) {
+    //   _panelState!._scrollingEnabled = true;
+    // }
+    if (panelPosition < 1) {
+      _panelState!._scMinffset = _panelState!._sc.offset;
+    }
+    _forceScrollChange = false;
   }
 
   bool _nowTargetForceDraggable = false;

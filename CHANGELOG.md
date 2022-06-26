@@ -1,3 +1,6 @@
+## [3.2.1+1] - [June 26, 2022]
+- fix bugs
+
 ## [3.2.1] - [June 26, 2022]
 ### Features
 - Added function PanelController.forseScrollChange(Future func), which solves the problem of scrolling with a ScrollController

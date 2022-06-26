@@ -72,6 +72,7 @@ class _HomePageState extends State<HomePage> {
         alignment: Alignment.topCenter,
         children: <Widget>[
           SlidingUpPanel(
+            snapPoint: .5,
             footer: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 100,
