@@ -239,7 +239,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
     // draggable and panel scrolling is enabled
     _sc = widget.scrollController ?? ScrollController();
     _sc.addListener(() {
-      if (widget.isDraggable && !_scrollingEnabled) _sc.jumpTo(0);
+      if (widget.isDraggable &&
+          !_scrollingEnabled &&
+          widget.controller?._forceScrollChange != true) _sc.jumpTo(0);
     });
 
     widget.controller?._addState(this);
@@ -484,7 +486,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
   // handles the sliding gesture
   void _onGestureSlide(double dy) {
     // only slide the panel if scrolling is not enabled
-    if (!_scrollingEnabled ||
+    if ((!_scrollingEnabled && widget.controller?._forceScrollChange != true) ||
         widget.controller?._nowTargetForceDraggable == true) {
       if (widget.slideDirection == SlideDirection.UP)
         _ac.value -= dy / (widget.maxHeight - widget.minHeight);
@@ -500,6 +502,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
         if (dy < 0) {
           _scrollingEnabled = true;
         } else {
+          widget.controller?._forceScrollChange = false;
           _scrollingEnabled = false;
         }
       });
@@ -667,6 +670,17 @@ class PanelController {
 
   void _addState(_SlidingUpPanelState panelState) {
     this._panelState = panelState;
+  }
+
+  bool _forceScrollChange = false;
+
+  /// use this function when scroll change in func
+  /// Example:
+  /// panelController.forseScrollChange(scrollController.animateTo(100, duration: Duration(milliseconds: 400), curve: Curves.ease))
+  Future<void> forseScrollChange(Future func) async {
+    _forceScrollChange = true;
+    await func;
+    // _forceScrollChange = false;
   }
 
   bool _nowTargetForceDraggable = false;

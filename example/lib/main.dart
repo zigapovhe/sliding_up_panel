@@ -13,11 +13,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sliding_up_panel/sliding_up_panel2.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 
 void main() => runApp(SlidingUpPanelExample());
 
@@ -220,10 +220,19 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("Popular", Icons.favorite, Colors.blue),
-                _button("Food", Icons.restaurant, Colors.red),
-                _button("Events", Icons.event, Colors.amber),
-                _button("More", Icons.more_horiz, Colors.green),
+                _button(
+                    "Popular",
+                    Icons.favorite,
+                    Colors.blue,
+                    () => {
+                          panelController.forseScrollChange(
+                              scrollController.animateTo(100,
+                                  duration: Duration(milliseconds: 400),
+                                  curve: Curves.ease))
+                        }),
+                _button("Food", Icons.restaurant, Colors.red, () => {}),
+                _button("Events", Icons.event, Colors.amber, () => {}),
+                _button("More", Icons.more_horiz, Colors.green, () => {}),
               ],
             ),
             SizedBox(
@@ -302,28 +311,32 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget _button(String label, IconData icon, Color color) {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Icon(
-            icon,
-            color: Colors.white,
+  Widget _button(
+      String label, IconData icon, Color color, void Function()? onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Icon(
+              icon,
+              color: Colors.white,
+            ),
+            decoration:
+                BoxDecoration(color: color, shape: BoxShape.circle, boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.15),
+                blurRadius: 8.0,
+              )
+            ]),
           ),
-          decoration:
-              BoxDecoration(color: color, shape: BoxShape.circle, boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.15),
-              blurRadius: 8.0,
-            )
-          ]),
-        ),
-        SizedBox(
-          height: 12.0,
-        ),
-        Text(label),
-      ],
+          SizedBox(
+            height: 12.0,
+          ),
+          Text(label),
+        ],
+      ),
     );
   }
 

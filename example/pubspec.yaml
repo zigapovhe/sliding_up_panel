@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  sliding_up_panel:
+  sliding_up_panel2:
     path: ../
 
   flutter_map: ^1.0.0
