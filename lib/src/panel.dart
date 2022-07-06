@@ -93,6 +93,9 @@ class SlidingUpPanel extends StatefulWidget {
   /// Set to false to disable the panel from snapping open or closed.
   final bool panelSnapping;
 
+  /// Disable panel draggable on scrolling. Defaults to false.
+  final bool disableDraggableOnScrolling;
+
   /// If non-null, this can be used to control the state of the panel.
   final PanelController? controller;
 
@@ -178,6 +181,7 @@ class SlidingUpPanel extends StatefulWidget {
       this.margin,
       this.renderPanelSheet = true,
       this.panelSnapping = true,
+      this.disableDraggableOnScrolling = false,
       this.controller,
       this.backdropEnabled = false,
       this.backdropColor = Colors.black,
@@ -240,6 +244,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
     _sc = widget.scrollController ?? ScrollController();
     _sc.addListener(() {
       if (widget.isDraggable &&
+          !widget.disableDraggableOnScrolling &&
           (!_scrollingEnabled || _panelPosition < 1) &&
           widget.controller?._forceScrollChange != true)
         _sc.jumpTo(_scMinffset);
@@ -493,6 +498,10 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
   // handles the sliding gesture
   void _onGestureSlide(double dy) {
     // only slide the panel if scrolling is not enabled
+    if (widget.controller?._nowTargetForceDraggable == false &&
+        widget.disableDraggableOnScrolling) {
+      return;
+    }
     if ((!_scrollingEnabled) ||
         _panelPosition < 1 ||
         widget.controller?._nowTargetForceDraggable == true) {
@@ -518,6 +527,10 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
 
   // handles when user stops sliding
   void _onGestureEnd(Velocity v) {
+    if (widget.controller?._nowTargetForceDraggable == false &&
+        widget.disableDraggableOnScrolling) {
+      return;
+    }
     double minFlingVelocity = 365.0;
     double kSnap = 8;
 

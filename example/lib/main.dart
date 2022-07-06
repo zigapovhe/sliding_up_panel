@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           SlidingUpPanel(
             snapPoint: .5,
+            disableDraggableOnScrolling: true,
             footer: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 100,
