@@ -1,3 +1,7 @@
+## [3.2.2] - [July 6, 2022]
+### Features
+- Added disableDraggableOnScrolling
+
 ## [3.2.1+1] - [June 26, 2022]
 - fix bugs
 
