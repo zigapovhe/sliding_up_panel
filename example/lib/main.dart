@@ -11,12 +11,9 @@ This product includes software developed by Akshath Jain (https://akshathjain.co
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_map/flutter_map.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 
 void main() => runApp(SlidingUpPanelExample());
