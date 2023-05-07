@@ -1,3 +1,7 @@
+## [3.3.0] - [March 7, 2023]
+### Features
+- Added HorizontalScrollableWidget
+
 ## [3.2.2] - [July 6, 2022]
 ### Features
 - Added disableDraggableOnScrolling

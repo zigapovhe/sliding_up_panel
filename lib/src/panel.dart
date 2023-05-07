@@ -8,10 +8,10 @@ Licensing: More information can be found here: https://github.com/Zotov-VD/slidi
 This product includes software developed by Akshath Jain (https://akshathjain.com)
 */
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/rendering.dart';
 
@@ -441,6 +441,8 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
   }
 
   bool _ignoreScrollable = false;
+  bool _isHorizontalScrollableWidget = false;
+  Axis? _scrollableAxis;
 
   // returns a gesture detector if panel is used
   // and a listener if panelBuilder is used.
@@ -464,22 +466,41 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
             entry.target.runtimeType == _ForceDraggableWidgetRenderBox)) {
           widget.controller?._nowTargetForceDraggable = true;
           _scMinffset = _sc.offset;
-        }
-        // if there any widget in the path that must ignore moved panel,
-        // stop it right here
-        else if (result.path.any((entry) =>
+          _isHorizontalScrollableWidget = false;
+        } else if (result.path.any((entry) =>
+            entry.target.runtimeType == _HorizontalScrollableWidgetRenderBox)) {
+          _isHorizontalScrollableWidget = true;
+          widget.controller?._nowTargetForceDraggable = false;
+        } else if (result.path.any((entry) =>
             entry.target.runtimeType ==
             _IgnoreDraggableWidgetWidgetRenderBox)) {
           _ignoreScrollable = true;
           widget.controller?._nowTargetForceDraggable = false;
+          _isHorizontalScrollableWidget = false;
           return;
         } else {
           widget.controller?._nowTargetForceDraggable = false;
+          _isHorizontalScrollableWidget = false;
         }
         _ignoreScrollable = false;
         _vt.addPosition(e.timeStamp, e.position);
       },
       onPointerMove: (PointerMoveEvent e) {
+        print(e.delta);
+        if (_scrollableAxis == null) {
+          if (e.delta.dx.abs() > e.delta.dy.abs()) {
+            _scrollableAxis = Axis.horizontal;
+          } else {
+            _scrollableAxis = Axis.vertical;
+          }
+          print(_scrollableAxis);
+        }
+
+        if (_isHorizontalScrollableWidget &&
+            _scrollableAxis == Axis.horizontal) {
+          return;
+        }
+
         if (_ignoreScrollable) return;
         _vt.addPosition(e.timeStamp,
             e.position); // add current position for velocity tracking
@@ -487,6 +508,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
       },
       onPointerUp: (PointerUpEvent e) {
         if (_ignoreScrollable) return;
+        _scrollableAxis = null;
         _onGestureEnd(_vt.getVelocity());
       },
       child: child,
@@ -895,4 +917,28 @@ class PanelScrollPhysics extends ScrollPhysics {
 
   @override
   bool get allowImplicitScrolling => false;
+}
+
+/// if you want to prevent unwanted panel dragging when scrolling widgets [Scrollable] with horizontal axis
+/// wrap the widget with this
+class HorizontalScrollableWidget extends SingleChildRenderObjectWidget {
+  final Widget child;
+
+  HorizontalScrollableWidget({
+    required this.child,
+  }) : super(
+          child: child,
+        );
+
+  @override
+  _HorizontalScrollableWidgetRenderBox createRenderObject(
+    BuildContext context,
+  ) {
+    return _HorizontalScrollableWidgetRenderBox();
+  }
+}
+
+class _HorizontalScrollableWidgetRenderBox extends RenderPointerListener {
+  @override
+  HitTestBehavior get behavior => HitTestBehavior.opaque;
 }

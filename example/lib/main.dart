@@ -70,21 +70,23 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           SlidingUpPanel(
             snapPoint: .5,
-            disableDraggableOnScrolling: true,
+            disableDraggableOnScrolling: false,
             footer: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 100,
               child: IgnoreDraggableWidget(
-                  child: BottomNavigationBar(
-                      backgroundColor: Colors.blue[50],
-                      items: [
+                child: BottomNavigationBar(
+                  backgroundColor: Colors.blue[50],
+                  items: [
                     BottomNavigationBarItem(
                         icon: Icon(Icons.home), label: 'Home'),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.man), label: 'Profile'),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.settings), label: 'Settings'),
-                  ])),
+                  ],
+                ),
+              ),
             ),
             header: SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -237,6 +239,19 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 36.0,
             ),
+            SizedBox(
+              height: 100,
+              child: HorizontalScrollableWidget(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, i) => SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Placeholder(),
+                  ),
+                ),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.only(left: 24.0, right: 24.0),
               child: Column(
@@ -269,10 +284,11 @@ class _HomePageState extends State<HomePage> {
                           child: Placeholder(
                             fallbackHeight: 120,
                             child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('IgnoreDraggableWidget'),
-                            )),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('IgnoreDraggableWidget'),
+                              ),
+                            ),
                           ),
                         ),
                       )
