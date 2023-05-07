@@ -486,14 +486,12 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
         _vt.addPosition(e.timeStamp, e.position);
       },
       onPointerMove: (PointerMoveEvent e) {
-        print(e.delta);
         if (_scrollableAxis == null) {
           if (e.delta.dx.abs() > e.delta.dy.abs()) {
             _scrollableAxis = Axis.horizontal;
           } else {
             _scrollableAxis = Axis.vertical;
           }
-          print(_scrollableAxis);
         }
 
         if (_isHorizontalScrollableWidget &&

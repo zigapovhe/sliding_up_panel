@@ -1,3 +1,6 @@
+## [3.3.0+1] - [March 8, 2023]
+- remove prints
+
 ## [3.3.0] - [March 7, 2023]
 ### Features
 - Added HorizontalScrollableWidget
