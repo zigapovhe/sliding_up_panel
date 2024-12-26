@@ -466,6 +466,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
 
   // handles the sliding gesture
   void _onGestureSlide(double dy) {
+    // Prevent from accessing AnimationController methods after calling dispose on it
+    if (!mounted) return;
+
     // only slide the panel if scrolling is not enabled
     if (widget.controller?._nowTargetForceDraggable == false && widget.disableDraggableOnScrolling) {
       return;
@@ -493,6 +496,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
 
   // handles when user stops sliding
   void _onGestureEnd(Velocity v) {
+    // Prevent from accessing AnimationController methods after calling dispose on it
+    if (!mounted) return;
+
     if (widget.controller?._nowTargetForceDraggable == false && widget.disableDraggableOnScrolling) {
       return;
     }
